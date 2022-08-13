@@ -3,6 +3,7 @@ if game.PlaceId ~= 8737602449 then return end
 for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
 v:Disable()
 end
+wait(5)
 if string.find(identifyexecutor(), "Synapse X") then
 syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/tzechco/roblox-scripts/main/Pls%20Donate/autofarm.lua'))()")
 else
