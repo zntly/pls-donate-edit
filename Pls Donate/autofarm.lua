@@ -4,7 +4,7 @@ for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) d
 v:Disable()
 end
 if string.find(identifyexecutor(), "Synapse X") then
-syn.queue_on_teleport("loadstring(game:HttpGet('url'))()")
+syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/tzechco/roblox-scripts/main/Pls%20Donate/autofarm.lua'))()")
 else
 game.StarterGui:SetCore("SendNotification", {
 Title = "Not using Synapse X";
