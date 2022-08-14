@@ -13,8 +13,37 @@ Text = "Make sure this script is in the autoexec folder or it won't work properl
 Duration = 15;
 })
 end
+local ScreenGui = Instance.new("ScreenGui")
+local TextBox = Instance.new("TextBox")
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+if isfile('PLSDONATE-WEBHOOK.txt') then
+getgenv().webhook = game:GetService('HttpService'):JSONDecode(readfile('PLSDONATE-WEBHOOK.txt'))
+TextBox.Text = getgenv().webhook
+else
+TextBox.Text = "Discord Webhook URL"
+end
+TextBox.Parent = ScreenGui
+TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.BackgroundTransparency = 0.500
+TextBox.ClipsDescendants = true
+TextBox.Position = UDim2.new(0.898658693, 0, 0.963724315, 0)
+TextBox.Size = UDim2.new(0, 136, 0, 30)
+TextBox.Font = Enum.Font.SourceSans
+TextBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextBox.TextSize = 14.000
+local function getText()
+local script = Instance.new('LocalScript', TextBox)
+local text = script.Parent
+text.FocusLost:Connect(function()
+getgenv().webhook = text.Text
+writefile('PLSDONATE-WEBHOOK.txt',game:GetService('HttpService'):JSONEncode(getgenv().webhook))
+end)
+end
+coroutine.wrap(getText)()
 local unclaimed = {}
 local counter
+local donation
 local errCount = 0
 local booths = {
   ["1"] = "72, 4, 36",
@@ -101,9 +130,9 @@ end
 local RaisedC = Players.LocalPlayer.leaderstats.Raised.value
 while(Players.LocalPlayer.leaderstats.Raised.value == RaisedC)
 do
-wait(30)
+wait(1)
 counter = counter + 1
-if counter >= 60 then
+if counter >= 1800 then
 wait(math.random(1,60))
 local Servers = game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/8737602449/servers/Public?sortOrder=Desc&limit=100"))
 for i,v in pairs(Servers.data) do
@@ -112,5 +141,17 @@ game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v.id)
 end
 end
 end
+end
+if getgenv().webhook then
+local LogService = Game:GetService('LogService')
+local logs = LogService:GetLogHistory()
+local donation
+if string.find(logs[#logs].message, game:GetService("Players").LocalPlayer.Name) then
+donation = tostring(logs[#logs].message.. " (Total: ".. Players.LocalPlayer.leaderstats.Raised.value.. ")")
+else
+donation = tostring("💰 Somebody tipped ".. Players.LocalPlayer.leaderstats.Raised.value - RaisedC.. " Robux to ".. game:GetService("Players").LocalPlayer.Name.. " (Total: ".. Players.LocalPlayer.leaderstats.Raised.value.. ")")
+end
+local request = http_request or request or HttpPost or syn.request
+request({Url = webhook, Body = game:GetService("HttpService"):JSONEncode({["content"] = donation}), Method = "POST", Headers = {["content-type"] = "application/json"}})
 end
 end
