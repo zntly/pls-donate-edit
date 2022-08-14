@@ -5,7 +5,7 @@ v:Disable()
 end
 wait(5)
 if string.find(identifyexecutor(), "Synapse X") then
-syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/tzechco/roblox-scripts/main/Pls%20Donate/autofarm.lua'))()")
+syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/tzechco/roblox-scripts/main/PLS%20DONATE/autofarm.lua'))()")
 else
 game.StarterGui:SetCore("SendNotification", {
 Title = "Not using Synapse X";
