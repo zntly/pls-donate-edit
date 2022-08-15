@@ -154,4 +154,5 @@ end
 local request = http_request or request or HttpPost or syn.request
 request({Url = webhook, Body = game:GetService("HttpService"):JSONEncode({["content"] = donation}), Method = "POST", Headers = {["content-type"] = "application/json"}})
 end
+wait(30)
 end
